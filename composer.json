@@ -1,11 +1,14 @@
 {
-    "name": "ilsenem/snipper",
-    "description": "Import your code snippets from GitHub gist repository with ease",
+    "name": "snipper/snipper",
+    "description": "Easy way to manage snippets from Github Gist service",
+    "keywords": ["cli", "util", "snippet", "gist", "github"],
+    "homepage": "https://github.com/ilsenem/snipper",
     "license": "MIT",
     "authors": [
         {
             "name": "Ilya Nemytchenko",
-            "email": "ilya.nemytchenko@gmail.com"
+            "email": "ilya.nemytchenko@gmail.com",
+            "role": "Developer"
         }
     ],
     "bin": [
