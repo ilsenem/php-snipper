@@ -1,0 +1,28 @@
+{
+    "name": "ilsenem/snipper",
+    "description": "Import your code snippets from GitHub gist repository with ease",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Ilya Nemytchenko",
+            "email": "ilya.nemytchenko@gmail.com"
+        }
+    ],
+    "bin": [
+        "bin/snipper"
+    ],
+    "autoload": {
+        "psr-4": {
+            "Snipper\\": "src/Snipper/"
+        }
+    },
+    "minimum-stability": "stable",
+    "require": {
+        "symfony/console": "^2.7",
+        "knplabs/github-api": "^1.4"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^4.7",
+        "phpunit/php-code-coverage": "^2.1"
+    }
+}
