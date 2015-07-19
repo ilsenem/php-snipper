@@ -1,6 +1,6 @@
 # Snipper
 
-Easy way to manage snippets from Gist Github service.
+Easy way to manage snippets from Github Gist service.
 
 ## Warning
 
