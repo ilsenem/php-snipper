@@ -3,9 +3,9 @@
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
+use Snipper\Snipper;
 
 final class Init extends Command
 {
@@ -14,16 +14,19 @@ final class Init extends Command
         $this
             ->setName('init')
             ->setDescription('Initialize application by creating default configuration in home directory')
-            ->addOption(
-                'force',
-                'f',
-                InputOption::VALUE_NONE,
-                'Force to rewrite existing file with default values'
+            ->addArgument(
+                'token',
+                InputArgument::REQUIRED,
+                'GitHub authentication token'
             );
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        //
+        if (!(new Snipper)->init($input->getArgument('token'))) {
+            throw new \Exception('Snipper already initialized.');
+        }
+
+        return $output->writeLn('<info>Default configuration created.</info>');
     }
 }

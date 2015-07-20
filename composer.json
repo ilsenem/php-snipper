@@ -1,6 +1,6 @@
 {
     "name": "snipper/snipper",
-    "description": "Easy way to manage snippets from Github Gist service",
+    "description": "Easy way to get snippets from GitHub Gist service",
     "keywords": ["cli", "util", "snippet", "gist", "github"],
     "homepage": "https://github.com/ilsenem/snipper",
     "license": "MIT",
@@ -25,7 +25,6 @@
         "knplabs/github-api": "^1.4"
     },
     "require-dev": {
-        "phpunit/phpunit": "^4.7",
-        "phpunit/php-code-coverage": "^2.1"
+        "symfony/var-dumper": "^2.7"
     }
 }

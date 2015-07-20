@@ -1,9 +1,6 @@
 #!/usr/bin/env php
 <?php
 
-define('SNIPPER_NAME', 'Snipper');
-define('SNIPPER_VERSION', '0.1.0');
-
 require __DIR__ . '/../vendor/autoload.php';
 
 (new Snipper\Console\SnipperApplication)->run();
