@@ -8,7 +8,7 @@ use Snipper\Util;
 final class Snipper
 {
     const NAME    = 'Snipper';
-    const VERSION = '0.1.0';
+    const VERSION = '0.1.1';
 
     private $util;
     private $initialized;
