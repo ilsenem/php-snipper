@@ -1,54 +1,130 @@
 <?php namespace Snipper\Console\Command;
 
-use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Question\ChoiceQuestion;
 
-use Snipper\Snipper;
-
-final class Get extends Command
+final class Get extends SnipperCommand
 {
     protected function configure()
     {
         $this
             ->setName('get')
-            ->setDescription('Download Gist snippet and create a new file with snippet\'s content')
+            ->setDescription('Get snippet from GitHub Gist service')
             ->addArgument(
                 'name',
                 InputArgument::REQUIRED,
-                'Snippet name'
+                'Snippet name (without hash sign)'
             )
             ->addOption(
                 'force',
                 'f',
                 InputOption::VALUE_NONE,
-                'Overwrite the existing file with the new one'
+                'Overwrite existing file'
             );
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $in, OutputInterface $out)
     {
-        $snipper = new Snipper;
+        $name   = $in->getArgument('name');
+        $force  = $in->getOption('force');
+        $client = $this->getClient();
+        $gists  = $client->api('gists')->all('starred');
 
-        $name    = $input->getArgument('name');
-        $skipped = $snipper->get($name, $input->getOption('force'));
+        $found = array_filter($gists, function ($gist) use ($name) {
+            $tag = '#' . $name;
 
-        if (null === $skipped) {
-            return $output->writeLn('<comment>Snippet with name \'' . $name . '\' was not found.</comment>');
+            return strpos($gist['description'], $tag) !== false;
+        });
+
+        switch (count($found)) {
+            case 0:
+                return $out->writeLn('<comment>Snippet with the name \'' . $name . '\' was not found.</comment>');
+            case 1:
+                $gist = $client->api('gists')->show($found[0]['id']);
+            break;
+            default:
+                $choices = [];
+
+                foreach ($gists as $gist) {
+                    $description = trim(str_replace('#' . $name, '', $gist['description']));
+
+                    $choices[] = sprintf('<options=bold>%s</options=bold> - %s', $name, $description);
+                }
+
+                $index = $this->chooseByIndex(
+                    $in, $out,
+                    'Snipper found duplicate snippets. Please select which to import:',
+                    $choices
+                );
+
+                $gist = $client->api('gists')->show($found[$index]['id']);
+            break;
         }
 
-        if (is_array($skipped) && count($skipped) > 0) {
-            $output->writeLn('<info>Snippet imported successfully, but some files were skipped, as they already exist in the current directory:</info>');
+        return $this->saveSnippet($in, $out, $gist['files'], $force);
+    }
 
-            foreach ($skipped as $file) {
-                $output->writeLn("\t" . $file);
+    private function saveSnippet(InputInterface $in, OutputInterface $out, array $snippet, $force = false)
+    {
+        $cwd         = getcwd();
+        $imported    = [];
+        $skipped     = [];
+        $overwritten = [];
+
+        $filesize = function ($bytes, $dec = 2) {
+            $size   = array('B', 'kB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB');
+            $factor = floor((strlen($bytes) - 1) / 3);
+
+            return sprintf("%.{$dec}f", $bytes / pow(1024, $factor)) . $size[$factor];
+        };
+
+        foreach ($snippet as $filename => $data) {
+            $filepath = $cwd . DIRECTORY_SEPARATOR . $filename;
+
+            if (file_exists($filepath)) {
+                $string = sprintf('  <options=bold>%s</options=bold> (%s -> %s)', $filename, $filesize(filesize($filepath)), $filesize($data['size']));
+
+                if (!$force) {
+                    $skipped[] = $string;
+
+                    continue;
+                }
+
+                $overwritten[] = $string;
+            } else {
+                $imported[] = sprintf('  <options=bold>%s</options=bold> (%s)', $filename, $filesize($data['size']));
             }
 
-            return;
+            file_put_contents($filepath, $data['content']);
         }
 
-        return $output->writeLn('<info>Snippet imported successfully.</info>');
+        if (!empty($imported)) {
+            $out->writeLn('New files:');
+
+            foreach ($imported as $string) {
+                $out->writeLn($string);
+            }
+        }
+
+        if (!empty($skipped)) {
+            $out->writeLn('Skipped files, since they are already exist (use \'-f\' to overwrite files):');
+
+            foreach ($skipped as $string) {
+                $out->writeLn($string);
+            }
+        }
+
+        if (!empty($overwritten)) {
+            $out->writeLn('Overwritten files:');
+
+            foreach ($overwritten as $string) {
+                $out->writeLn($string);
+            }
+        }
+
+        return $out->writeLn('<info>Done.</info>');
     }
 }

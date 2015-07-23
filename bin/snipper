@@ -1,6 +1,9 @@
 #!/usr/bin/env php
 <?php
 
+define('OS_HOME_PATH'             , (false !== strpos(PHP_OS, 'win') && PHP_OS !== 'Darwin') ? getenv('HOMEDRIVE') . DIRECTORY_SEPARATOR . getenv('HOMEPATH') : getenv('HOME'));
+define('SNIPPER_CONFIG_FILE_PATH' , DIRECTORY_SEPARATOR . '.snipper' . DIRECTORY_SEPARATOR . 'snipper.json');
+
 $autoloaders = [
     __DIR__ . '/../../../autoload.php',
     __DIR__ . '/../vendor/autoload.php',

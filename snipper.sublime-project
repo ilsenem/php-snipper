@@ -5,7 +5,7 @@
             "name": "Snipper",
             "path": ".",
             "folder_exclude_patterns": [
-                "vendor"
+                // "vendor"
             ]
         }
     ]

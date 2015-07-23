@@ -1,30 +1,40 @@
 {
-    "name": "snipper/snipper",
-    "description": "Easy way to get snippets from GitHub Gist service",
-    "keywords": ["cli", "util", "snippet", "gist", "github"],
-    "homepage": "https://github.com/ilsenem/snipper",
-    "license": "MIT",
-    "authors": [
-        {
-            "name": "Ilya Nemytchenko",
-            "email": "ilya.nemytchenko@gmail.com",
-            "role": "Developer"
-        }
-    ],
-    "bin": [
-        "bin/snipper"
-    ],
-    "autoload": {
-        "psr-4": {
-            "Snipper\\": "src/Snipper/"
-        }
-    },
-    "minimum-stability": "stable",
-    "require": {
-        "symfony/console": "^2.7",
-        "knplabs/github-api": "^1.4"
-    },
-    "require-dev": {
-        "symfony/var-dumper": "^2.7"
+  "name": "snipper/snipper",
+  "description": "Easy way to get snippets from GitHub Gist service",
+  "keywords": ["cli", "util", "snippet", "gist", "github"],
+  "homepage": "https://github.com/ilsenem/snipper",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Ilya Nemytchenko",
+      "email": "ilya.nemytchenko@gmail.com",
+      "role": "Developer"
     }
+  ],
+  "bin": [
+    "bin/snipper"
+  ],
+  "autoload": {
+    "psr-4": {
+      "Snipper\\": "src/Snipper/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Snipper\\Tests\\": "tests/Snipper/"
+    }
+  },
+  "minimum-stability": "stable",
+  "require": {
+    "php": "^5.4",
+    "symfony/console": "^2.7",
+    "knplabs/github-api": "^1.4"
+  },
+  "require-dev": {
+    "php": "^5.4",
+    "ext-xdebug": "^2.2",
+    "symfony/var-dumper": "^2.7",
+    "phpunit/phpunit": "^4.7",
+    "phpunit/php-code-coverage": "^2.1"
+  }
 }

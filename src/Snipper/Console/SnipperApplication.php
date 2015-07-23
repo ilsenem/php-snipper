@@ -2,13 +2,11 @@
 
 use Symfony\Component\Console\Application;
 
-use Snipper\Snipper;
-
 final class SnipperApplication extends Application
 {
     public function __construct()
     {
-        parent::__construct(Snipper::NAME, Snipper::VERSION);
+        parent::__construct('Snipper', '0.1.2');
 
         $this
             ->addCommands([
