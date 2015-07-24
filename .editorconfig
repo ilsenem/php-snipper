@@ -7,3 +7,14 @@ indent_size = 4
 indent_style = space
 insert_final_newline = true
 trim_trailing_whitespace = true
+
+[*.{js,css,coffee,styl,json}]
+indent_size = 2
+
+[*.{xml,html}]
+indent_size = 4
+indent_style = tab
+
+[Makefile]
+indent_size = 8
+indent_style = tab

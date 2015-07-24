@@ -6,6 +6,8 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ChoiceQuestion;
 
+use Snipper\Client\ClientInterface;
+
 final class Get extends SnipperCommand
 {
     protected function configure()
@@ -30,8 +32,7 @@ final class Get extends SnipperCommand
     {
         $name   = $in->getArgument('name');
         $force  = $in->getOption('force');
-        $client = $this->getClient();
-        $gists  = $client->api('gists')->all('starred');
+        $gists  = $this->client->getGists();
 
         $found = array_filter($gists, function ($gist) use ($name) {
             $tag = '#' . $name;
@@ -43,7 +44,7 @@ final class Get extends SnipperCommand
             case 0:
                 return $out->writeLn('<comment>Snippet with the name \'' . $name . '\' was not found.</comment>');
             case 1:
-                $gist = $client->api('gists')->show($found[0]['id']);
+                $gist = $this->client->getGist($found[0]['id']);
             break;
             default:
                 $choices = [];
@@ -60,7 +61,7 @@ final class Get extends SnipperCommand
                     $choices
                 );
 
-                $gist = $client->api('gists')->show($found[$index]['id']);
+                $gist = $this->client->getGist($found[$index]['id']);
             break;
         }
 

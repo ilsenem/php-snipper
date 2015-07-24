@@ -4,6 +4,12 @@ use Snipper\Console\SnipperApplication;
 
 final class SnipperApplicationTest extends \PHPUnit_Framework_TestCase
 {
+    public static function setUpBeforeClass()
+    {
+        define('OS_HOME_PATH', __DIR__ . implode(DIRECTORY_SEPARATOR, ['' ,'..', '..']));
+        define('SNIPPER_CONFIG_FILE_PATH', implode(DIRECTORY_SEPARATOR, ['', '.config', 'snipper.json']));
+    }
+
     public function testApplicationStarts()
     {
         $snipper = new SnipperApplication;
@@ -20,7 +26,7 @@ final class SnipperApplicationTest extends \PHPUnit_Framework_TestCase
     {
         $snipper = new SnipperApplication;
 
-        $this->assertEquals('0.1.2', $snipper->getVersion());
+        $this->assertEquals('0.1.3', $snipper->getVersion());
     }
 
     public function testApplicationHasInitCommand()
