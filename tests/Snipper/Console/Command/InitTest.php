@@ -36,8 +36,7 @@ final class InitTest extends TestCase
      */
     public function testInitCreatesSnipperHomeDirectory()
     {
-        define('OS_HOME_PATH', __DIR__);
-        define('SNIPPER_CONFIG_FILE_PATH', DIRECTORY_SEPARATOR . '.snipper' . DIRECTORY_SEPARATOR . 'snipper.json');
+        $this->setDefaultPaths();
 
         $tester = $this->getCommandTester(new Init, 'init', ['token' => 'token']);
 
@@ -51,8 +50,7 @@ final class InitTest extends TestCase
      */
     public function testInitReplaceTokenIfInitialized()
     {
-        define('OS_HOME_PATH', __DIR__);
-        define('SNIPPER_CONFIG_FILE_PATH', DIRECTORY_SEPARATOR . '.snipper' . DIRECTORY_SEPARATOR . 'snipper.json');
+        $this->setDefaultPaths();
 
         $this->getCommandTester(new Init, 'init', ['token' => 'token']);
 
@@ -60,5 +58,11 @@ final class InitTest extends TestCase
 
         $this->assertRegExp('/Snipper already initialized/', $tester->getDisplay());
         $this->assertStringEqualsFile(OS_HOME_PATH . SNIPPER_CONFIG_FILE_PATH, json_encode(['token' => 'newtoken'], JSON_PRETTY_PRINT));
+    }
+
+    private function setDefaultPaths()
+    {
+        define('OS_HOME_PATH', __DIR__);
+        define('SNIPPER_CONFIG_FILE_PATH', DIRECTORY_SEPARATOR . '.snipper' . DIRECTORY_SEPARATOR . 'snipper.json');
     }
 }

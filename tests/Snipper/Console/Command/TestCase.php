@@ -8,12 +8,20 @@ use Snipper\Tests\Mocks\ClientMock;
 
 abstract class TestCase extends \PHPUnit_Framework_TestCase
 {
-    protected function getCommandTester(Command $command, $name, $params = [])
+    protected function getCommandTester(Command $command, $name, $params = [], $helpers = [])
     {
         $application = new Application;
             $application->add($command);
 
-        $tester = new CommandTester($application->get($name));
+        $testedCommand = $application->get($name);
+
+        if (!empty($helpers)) {
+            foreach ($helpers as $helperName => $helperMock) {
+                $testedCommand->getHelperSet()->set($helperMock, $helperName);
+            }
+        }
+
+        $tester = new CommandTester($testedCommand);
             $tester->execute(array_merge(['command' => $command->getName(),], $params));
 
         return $tester;

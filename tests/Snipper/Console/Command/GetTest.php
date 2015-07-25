@@ -83,4 +83,25 @@ final class GetTest extends TestCase
         $this->assertFileExists($this->testDir . DIRECTORY_SEPARATOR . 'test');
         $this->assertStringEqualsFile($this->testDir . DIRECTORY_SEPARATOR . 'test', 'Another test');
     }
+
+    public function testGetAskAboutDuplicates()
+    {
+        $questionHelperMock = $this->getMock(
+            '\Symfony\Component\Console\Helper\QuestionHelper',
+            ['ask']
+        );
+            $questionHelperMock
+                ->method('ask')
+                ->willReturn(1);
+
+        $tester = $this->getCommandTester(new Get($this->getClientMock()), 'get', [
+            'name' => 'duplicate'
+        ], [
+            'question' => $questionHelperMock,
+        ]);
+
+        $this->assertRegExp('/New files.*test/s', $tester->getDisplay());
+        $this->assertFileExists($this->testDir . DIRECTORY_SEPARATOR . 'test');
+        $this->assertStringEqualsFile($this->testDir . DIRECTORY_SEPARATOR . 'test', 'Second duplicate');
+    }
 }
