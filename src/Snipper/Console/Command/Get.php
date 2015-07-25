@@ -40,6 +40,8 @@ final class Get extends SnipperCommand
             return strpos($gist['description'], $tag) !== false;
         });
 
+        $found = array_values($found);
+
         switch (count($found)) {
             case 0:
                 return $out->writeLn('<comment>Snippet with the name \'' . $name . '\' was not found.</comment>');
