@@ -26,7 +26,7 @@ final class SnipperApplicationTest extends \PHPUnit_Framework_TestCase
     {
         $snipper = new SnipperApplication;
 
-        $this->assertEquals('0.1.3', $snipper->getVersion());
+        $this->assertEquals('0.1.4', $snipper->getVersion());
     }
 
     public function testApplicationHasInitCommand()

@@ -28,7 +28,7 @@ final class InitTest extends TestCase
         define('OS_HOME_PATH', 'notexists');
         define('SNIPPER_CONFIG_FILE_PATH', null);
 
-        $this->getCommandTester(new Init, 'init', ['token' => 'token']);
+        $this->getCommandTester(new Init, 'init');
     }
 
     /**
@@ -38,7 +38,9 @@ final class InitTest extends TestCase
     {
         $this->setDefaultPaths();
 
-        $tester = $this->getCommandTester(new Init, 'init', ['token' => 'token']);
+        $tester = $this->getCommandTester(new Init, 'init', [], [
+            'question' => $this->getQuestionHelperMockForTokenAsk('token'),
+        ]);
 
         $this->assertRegExp('/Done/', $tester->getDisplay());
         $this->assertFileExists(OS_HOME_PATH . SNIPPER_CONFIG_FILE_PATH);
@@ -52,9 +54,13 @@ final class InitTest extends TestCase
     {
         $this->setDefaultPaths();
 
-        $this->getCommandTester(new Init, 'init', ['token' => 'token']);
+        $this->getCommandTester(new Init, 'init', [], [
+            'question' => $this->getQuestionHelperMockForTokenAsk('token'),
+        ]);
 
-        $tester = $this->getCommandTester(new Init, 'init', ['token' => 'newtoken']);
+        $tester = $this->getCommandTester(new Init, 'init', [], [
+            'question' => $this->getQuestionHelperMockForTokenAsk('newtoken'),
+        ]);
 
         $this->assertRegExp('/Snipper already initialized/', $tester->getDisplay());
         $this->assertStringEqualsFile(OS_HOME_PATH . SNIPPER_CONFIG_FILE_PATH, json_encode(['token' => 'newtoken'], JSON_PRETTY_PRINT));
@@ -64,5 +70,19 @@ final class InitTest extends TestCase
     {
         define('OS_HOME_PATH', __DIR__);
         define('SNIPPER_CONFIG_FILE_PATH', DIRECTORY_SEPARATOR . '.snipper' . DIRECTORY_SEPARATOR . 'snipper.json');
+    }
+
+    private function getQuestionHelperMockForTokenAsk($token)
+    {
+        $questionHelperMock = $this->getMock(
+            '\Symfony\Component\Console\Helper\QuestionHelper',
+            ['ask']
+        );
+
+        $questionHelperMock
+            ->method('ask')
+            ->willReturn($token);
+
+        return $questionHelperMock;
     }
 }

@@ -90,9 +90,10 @@ final class GetTest extends TestCase
             '\Symfony\Component\Console\Helper\QuestionHelper',
             ['ask']
         );
-            $questionHelperMock
-                ->method('ask')
-                ->willReturn(1);
+
+        $questionHelperMock
+            ->method('ask')
+            ->willReturn(1);
 
         $tester = $this->getCommandTester(new Get($this->getClientMock()), 'get', [
             'name' => 'duplicate'

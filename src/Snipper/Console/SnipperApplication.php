@@ -10,7 +10,7 @@ final class SnipperApplication extends Application
 
     public function __construct()
     {
-        parent::__construct('Snipper', '0.1.3');
+        parent::__construct('Snipper', '0.1.4');
 
         $this->getConfig();
 

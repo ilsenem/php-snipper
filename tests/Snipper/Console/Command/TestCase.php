@@ -11,7 +11,8 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase
     protected function getCommandTester(Command $command, $name, $params = [], $helpers = [])
     {
         $application = new Application;
-            $application->add($command);
+
+        $application->add($command);
 
         $testedCommand = $application->get($name);
 
@@ -22,7 +23,8 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase
         }
 
         $tester = new CommandTester($testedCommand);
-            $tester->execute(array_merge(['command' => $command->getName(),], $params));
+
+        $tester->execute(array_merge(['command' => $command->getName(),], $params));
 
         return $tester;
     }

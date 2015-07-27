@@ -4,6 +4,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Question\Question;
 
 final class Init extends Command
 {
@@ -11,17 +12,11 @@ final class Init extends Command
     {
         $this
             ->setName('init')
-            ->setDescription('Initialize application')
-            ->addArgument(
-                'token',
-                InputArgument::REQUIRED,
-                'GitHub personal access token'
-            );
+            ->setDescription('Initialize Snipper');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $in, OutputInterface $out)
     {
-        $token = $input->getArgument('token');
         $path  = OS_HOME_PATH . SNIPPER_CONFIG_FILE_PATH;
 
         if (!is_writable(OS_HOME_PATH)) {
@@ -32,12 +27,15 @@ final class Init extends Command
             mkdir(dirname($path));
         }
 
+        $question = new Question('Please enter personal access token for your GitHub account: ');
+        $token    = $this->getHelper('question')->ask($in, $out, $question);
+
         if (file_exists($path)) {
-            $output->writeLn('Snipper already initialized. Writing new token...');
+            $out->writeLn('<comment>Snipper already initialized. Writing new token...</comment>');
         }
 
         file_put_contents($path, json_encode(['token' => $token], JSON_PRETTY_PRINT));
 
-        $output->writeLn('<info>Done.</info>');
+        $out->writeLn('<info>Done.</info>');
     }
 }

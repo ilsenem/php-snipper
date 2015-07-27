@@ -27,6 +27,7 @@ abstract class SnipperCommand extends Command
         }
 
         $question = new Question(' > ');
+
         $question->setValidator(function ($answer) use ($choices) {
             $answer = (int) $answer;
 
@@ -38,6 +39,7 @@ abstract class SnipperCommand extends Command
 
             return $answer;
         });
+
         $question->setMaxAttempts(3);
 
         return $this->getHelper('question')->ask($in, $out, $question);
