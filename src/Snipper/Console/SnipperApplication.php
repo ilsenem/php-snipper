@@ -29,9 +29,11 @@ final class SnipperApplication extends Application
 
     protected function getConfig()
     {
+        // @codeCoverageIgnoreStart
         if (!is_null($this->config)) {
             return $this->config;
         }
+        // @codeCoverageIgnoreEnd
 
         if (!file_exists(OS_HOME_PATH . SNIPPER_CONFIG_FILE_PATH)) {
             throw new \Exception('Configuration file not found. Is Snipper initialized?');

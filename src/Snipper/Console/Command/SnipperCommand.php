@@ -28,6 +28,7 @@ abstract class SnipperCommand extends Command
 
         $question = new Question(' > ');
 
+        // @codeCoverageIgnoreStart
         $question->setValidator(function ($answer) use ($choices) {
             $answer = (int) $answer;
 
@@ -39,6 +40,7 @@ abstract class SnipperCommand extends Command
 
             return $answer;
         });
+        // @codeCoverageIgnoreEnd
 
         $question->setMaxAttempts(3);
 
