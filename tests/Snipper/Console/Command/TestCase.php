@@ -30,48 +30,48 @@ abstract class TestCase extends \PHPUnit_Framework_TestCase
     protected function getClientMock()
     {
         $client = new ClientMock('');
-            $client->setGists([
-                [
-                    'id'          => 0,
-                    'description' => '#snippet',
-                    'files'       => [
-                        'test' => [
-                            'size'    => 123,
-                            'content' => 'Test snippet',
-                        ],
+        $client->setGists([
+            [
+                'id'          => 0,
+                'description' => '#snippet',
+                'files'       => [
+                    'test' => [
+                        'size'    => 123,
+                        'content' => 'Test snippet',
                     ],
                 ],
-                [
-                    'id'          => 1,
-                    'description' => '#anothersnippet',
-                    'files'       => [
-                        'test' => [
-                            'size'    => 321,
-                            'content' => 'Another test',
-                        ],
+            ],
+            [
+                'id'          => 1,
+                'description' => '#anothersnippet',
+                'files'       => [
+                    'test' => [
+                        'size'    => 321,
+                        'content' => 'Another test',
                     ],
                 ],
-                [
-                    'id'          => 2,
-                    'description' => '#duplicate',
-                    'files'       => [
-                        'test' => [
-                            'size'    => 123,
-                            'content' => 'First duplicate',
-                        ],
+            ],
+            [
+                'id'          => 2,
+                'description' => '#duplicate',
+                'files'       => [
+                    'test' => [
+                        'size'    => 123,
+                        'content' => 'First duplicate',
                     ],
                 ],
-                [
-                    'id'          => 3,
-                    'description' => '#duplicate',
-                    'files'       => [
-                        'test' => [
-                            'size'    => 321,
-                            'content' => 'Second duplicate',
-                        ],
+            ],
+            [
+                'id'          => 3,
+                'description' => '#duplicate',
+                'files'       => [
+                    'test' => [
+                        'size'    => 321,
+                        'content' => 'Second duplicate',
                     ],
                 ],
-            ]);
+            ],
+        ]);
 
         return $client;
     }

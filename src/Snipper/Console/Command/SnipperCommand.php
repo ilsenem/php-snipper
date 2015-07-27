@@ -27,18 +27,18 @@ abstract class SnipperCommand extends Command
         }
 
         $question = new Question(' > ');
-            $question->setValidator(function ($answer) use ($choices) {
-                $answer = (int) $answer;
+        $question->setValidator(function ($answer) use ($choices) {
+            $answer = (int) $answer;
 
-                if (!array_key_exists($answer, $choices)) {
-                    throw new \RuntimeException(
-                        'There is no such option as \'' . $answer . '\'.'
-                    );
-                }
+            if (!array_key_exists($answer, $choices)) {
+                throw new \RuntimeException(
+                    'There is no such option as \'' . $answer . '\'.'
+                );
+            }
 
-                return $answer;
-            });
-            $question->setMaxAttempts(3);
+            return $answer;
+        });
+        $question->setMaxAttempts(3);
 
         return $this->getHelper('question')->ask($in, $out, $question);
     }

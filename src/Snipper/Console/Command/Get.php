@@ -47,7 +47,7 @@ final class Get extends SnipperCommand
                 return $out->writeLn('<comment>Snippet with the name \'' . $name . '\' was not found.</comment>');
             case 1:
                 $gist = $this->client->getGist($found[0]['id']);
-            break;
+                break;
             default:
                 $choices = [];
 
@@ -64,7 +64,7 @@ final class Get extends SnipperCommand
                 );
 
                 $gist = $this->client->getGist($found[$index]['id']);
-            break;
+                break;
         }
 
         return $this->saveSnippet($in, $out, $gist['files'], $force);

@@ -16,7 +16,7 @@ final class KnplabsClient implements ClientInterface
         }
 
         $this->client = new Client(new CachedHttpClient(['cache_dir' => $cacheDir]));
-            $this->client->authenticate($token, Client::AUTH_HTTP_TOKEN);
+        $this->client->authenticate($token, Client::AUTH_HTTP_TOKEN);
     }
 
     public function getGists()
