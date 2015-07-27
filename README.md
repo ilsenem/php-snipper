@@ -21,7 +21,7 @@ composer global require snipper/snipper:@stable
 You must provide GitHub personal access token to bypass API request limit. In current release no permissions required.
 
 ```bash
-snipper init <token>
+snipper init
 ```
 
 ### Get snippet
