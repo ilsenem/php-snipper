@@ -4,10 +4,23 @@ use Symfony\Component\Console\Application;
 
 use Snipper\Client\KnplabsClient;
 
+/**
+ * Console application bootstrapper
+ */
 final class SnipperApplication extends Application
 {
+    /**
+     * Application configuration
+     *
+     * @var array
+     */
     private $config;
 
+    /**
+     * @inheritdoc
+     *
+     * @throws \Exception
+     */
     public function __construct()
     {
         parent::__construct('Snipper', '0.1.4');
@@ -27,6 +40,13 @@ final class SnipperApplication extends Application
             ]);
     }
 
+    /**
+     * Get configuration values from Snipper config file in home dir
+     *
+     * @throws \Exception
+     *
+     * @return array
+     */
     protected function getConfig()
     {
         // @codeCoverageIgnoreStart

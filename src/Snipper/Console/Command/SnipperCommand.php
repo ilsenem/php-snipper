@@ -2,13 +2,26 @@
 
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Question\Question;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 
 use Snipper\Client\ClientInterface;
 
+/**
+ * Abstract command class for Snipper application
+ */
 abstract class SnipperCommand extends Command
 {
+    /**
+     * @var ClientInterface
+     */
     protected $client;
 
+    /**
+     * Bootstrap application with GitHub client
+     *
+     * @param ClientInterface $client
+     */
     public function __construct(ClientInterface $client)
     {
         parent::__construct();
@@ -16,7 +29,18 @@ abstract class SnipperCommand extends Command
         $this->client = $client;
     }
 
-    protected function chooseByIndex($in, $out, $question, $choices)
+    /**
+     * Ask user to choose from list of available variants and return selected
+     * index
+     *
+     * @param InputInterface  $in
+     * @param OutputInterface $out
+     * @param string          $question
+     * @param array           $choices
+     *
+     * @return mixed
+     */
+    protected function chooseByIndex(InputInterface $in, OutputInterface $out, $question, array $choices)
     {
         $padding = strlen(count($choices)) - 1;
 
@@ -26,10 +50,10 @@ abstract class SnipperCommand extends Command
             $out->writeLn(sprintf('  [<info>%d</info>] %s', str_pad($i, $padding, ' ', STR_PAD_LEFT), $choices[$i]));
         }
 
-        $question = new Question(' > ');
+        $questionResolver = new Question(' > ');
 
         // @codeCoverageIgnoreStart
-        $question->setValidator(function ($answer) use ($choices) {
+        $questionResolver->setValidator(function ($answer) use ($choices) {
             $answer = (int) $answer;
 
             if (!array_key_exists($answer, $choices)) {
@@ -42,8 +66,8 @@ abstract class SnipperCommand extends Command
         });
         // @codeCoverageIgnoreEnd
 
-        $question->setMaxAttempts(3);
+        $questionResolver->setMaxAttempts(3);
 
-        return $this->getHelper('question')->ask($in, $out, $question);
+        return $this->getHelper('question')->ask($in, $out, $questionResolver);
     }
 }

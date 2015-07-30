@@ -3,10 +3,21 @@
 use Github\Client;
 use Github\HttpClient\CachedHttpClient;
 
+/**
+ * ClientInterface implementation of Knplabs GitHub API client
+ *
+ * @see https://github.com/KnpLabs/php-github-api
+ */
 final class KnplabsClient implements ClientInterface
 {
+    /**
+     * @var \Github\Client
+     */
     private $client;
 
+    /**
+     * @inheritdoc
+     */
     public function __construct($token)
     {
         $cacheDir = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'snipper';
@@ -22,6 +33,7 @@ final class KnplabsClient implements ClientInterface
     }
 
     /**
+     * @inheritdoc
      * @codeCoverageIgnore
      */
     public function getGists()
@@ -30,6 +42,7 @@ final class KnplabsClient implements ClientInterface
     }
 
     /**
+     * @inheritdoc
      * @codeCoverageIgnore
      */
     public function getGist($id)

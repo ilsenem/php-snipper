@@ -8,8 +8,16 @@ use Symfony\Component\Console\Question\ChoiceQuestion;
 
 use Snipper\Client\ClientInterface;
 
+/**
+ * Download gist by it's name
+ */
 final class Get extends SnipperCommand
 {
+    /**
+     * @inheritdoc
+     *
+     * @return void
+     */
     protected function configure()
     {
         $this
@@ -28,6 +36,11 @@ final class Get extends SnipperCommand
             );
     }
 
+    /**
+     * @inheritdoc
+     *
+     * @return OutputInterface
+     */
     protected function execute(InputInterface $in, OutputInterface $out)
     {
         $name   = $in->getArgument('name');
@@ -70,6 +83,16 @@ final class Get extends SnipperCommand
         return $this->saveSnippet($in, $out, $gist['files'], $force);
     }
 
+    /**
+     * Save named snippet in cwd
+     *
+     * @param InputInterface  $in
+     * @param OutputInterface $out
+     * @param array           $snippet
+     * @param bool            $force    Force to overwrite files that already exists
+     *
+     * @return OutputInterface
+     */
     private function saveSnippet(InputInterface $in, OutputInterface $out, array $snippet, $force = false)
     {
         $cwd         = getcwd();
