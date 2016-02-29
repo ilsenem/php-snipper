@@ -1,3 +1,7 @@
+# ABANDONED
+
+This project is abandoned. Could be rewritten in Go.
+
 # Snipper
 
 Easy way to manage snippets from GitHub Gist service.
